@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2013-2014 Fred Hutchinson Cancer Research Center
+# Copyright (c) 2013-2015 Fred Hutchinson Cancer Research Center
 #
 # Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -14,7 +14,7 @@ import json,sys
 
 def main(output_file_name,output):
     try:
-        of=open(output_file_name,'w')
+        of=open(output_file_name,'wb')
     except:
         sys.stderr.write('FATAL ERROR: path to output file '+output_file_name+' not found')
         return('FATAL ERROR: path to output file '+output_file_name+' not found')
