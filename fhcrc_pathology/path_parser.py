@@ -15,13 +15,6 @@
 #
 
 ''' author @ esilgard '''
-''' written 2013 '''
-
-''' last update Nov 2014
-    - added section order to to the section heading
-    - SpecimenSource column from OBR as section (first section, section order=0)
-    - stripped all NULL lines (to avoid character offset issues when interpreting NULL as a string) and replaced with a single carriage return
-'''
 __version__='path_parser1.0'
 
 import re,sys,global_strings,os
@@ -77,7 +70,8 @@ def parse(obx_file):
                         pathology_dictionary[mrn]=pathology_dictionary.get(mrn,{})                        
                         pathology_dictionary[mrn][accession]=pathology_dictionary[mrn].get(accession,{})
                         if index=='1':
-                            chars_onset=0                            
+                            chars_onset=0
+                            ## create a specimen source dictionary for each labeled specimen (in the same format as the regular pathology section dictionary ##
                             specimen_dictionary=dict((x.split(')')[0],x.split(')')[1].replace('(',' ')) for x in  line[headers.get(global_strings.SPECIMEN_SOURCE)].strip('"').split('~'))                            
                             pathology_dictionary[mrn][accession][(0,global_strings.SPECIMEN_SOURCE,0,None)]={}                            
                             pathology_dictionary[mrn][accession][(0,global_strings.SPECIMEN_SOURCE,0,None)][0]=specimen_dictionary                                                  
@@ -86,14 +80,13 @@ def parse(obx_file):
                         
                         # reassign the section variable if you find a section pattern match, reset specimen and increment section order
                         if section_header: section=section_header.group(1).strip();section_order+=1;specimen=''
-                        specimen_header=re.match('[\s\"]{,4}([,A-Z\- ]+?)[\s]*(FS)?[\s]*[)].*',text)            
-                        
-                        if specimen_header:
+                        specimen_header=re.match('[\s\"]{,4}([,A-Z\- and&]+?)[\s]*(FS)?[\s]*[)].*',text)                        
+                        if specimen_header:                          
                             specimen='' ## reset specimen if there is a new specimen header match
                             M=specimen_header.group(1).replace(' ','')                                                    
                             for each in  specimen_dictionary.keys():                                
                                 if re.search('['+M+']',each):
-                                    specimen+=each
+                                    specimen+=each                                
                         pathology_dictionary[mrn][accession][(section_order,section,chars_onset,specimen)]=pathology_dictionary[mrn][accession].get((section_order,section,chars_onset,specimen),{})                
                         pathology_dictionary[mrn][accession][(section_order,section,chars_onset,specimen)][index]=text
                         pathology_dictionary[mrn][accession][(-1,'FullText',0,None)]=pathology_dictionary[mrn][accession].get((-1,'FullText',0,None),'')+text+'\n'

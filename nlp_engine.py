@@ -20,51 +20,66 @@
     should exit with a non-zero status for any fatal errors and
     output warnings and results in json format to CWD in the file provided in cmd line arguments
     author@esilgard
-    last updated October 2014
 '''
  
-import sys,os
-import output_results,make_text_output_directory,codecs
+import sys,os,json
+import output_results,make_text_output_directory,codecs,metadata
 from datetime import datetime
+
+## declare output dictionary for values, warnings, and metadata
+output_dictionary={}
+
+## path to the nlp_engine.py script ##
+nlp_engine_path= os.path.dirname(os.path.realpath(__file__))+'/'
+original_wd=os.getcwd()
 
 ## timeit variable for performance testing ##
 begin=datetime.today()
-## path to the nlp_engine.py script ##
-path= os.path.dirname(os.path.realpath(__file__))+'/'
-## test line for commiting and evaluating pre and post hook scripts
+
 ## grab version number from txt file which updates with git post-commit hook scipt (assume utf-8, but back up to utf-16) ##
 try:
-    __version__=codecs.open(path+'version','rb', encoding='utf-8').readlines()[0].strip()
+    __version__=codecs.open(nlp_engine_path+'version','rb', encoding='utf-8').readlines()[0].strip()
 except:
     try:
-         __version__=codecs.open(path+'version','rb', encoding='utf-16').readlines()[0].strip()
+        __version__=codecs.open(nlp_engine_path+'version','rb', encoding='utf-16').readlines()[0].strip()
     except:
         sys.stderr.write('FATAL ERROR: could not locate or parse version file.')
         sys.exit(1)
-
-## path to file containing flags and descriptions ##
+    
+## path to file containing command line flags and descriptions ##
 ## in the format -char<tab>description<tab>verbose_description(for help and error messages) ##
 try:
-    command_line_flag_file=path+'command_line_flags.txt'
+    command_line_flag_file=open(nlp_engine_path+'command_line_flags.txt','r')
+    try:
+        ## set of required flags for program to run successfully ##
+        required_flags=set([])
+        ## dictionary of actual flags:argument values ##
+        arguments={}
+        ## dictionary of flag:tuple(flag description,verbose flag description) ##
+        command_line_flags={}
+        for line in command_line_flag_file.readlines():
+            line=line.strip().split('\t')
+            if line[1]=='required': required_flags.add(line[0])
+            command_line_flags[line[0]]=(line[2],line[3])
+        command_line_flag_file.close()
+        args=sys.argv[1:]
+    except:
+        sys.stderr.write('FATAL ERROR: command line flag dictionary could not be established from file, potential formatting error.  program aborted.')
+        sys.exit(1)    
 except:
     sys.stderr.write('FATAL ERROR: command line flag file not found.  program aborted.')
     sys.exit(1)
 
 
-## set of required flags for program to run successfully ##
-required_flags=set([])
+## parse the arguments from arg1 on into a dictionary - notify user of unrecognized flags ##
+## NOTE - this does assume that flags start in the first position and every other argument is a flag ##
+for index in range(0,len(args)-1,2):    
+    if args[index] in command_line_flags:
+        arguments[args[index]]=args[index+1]
+    else:
+        output_dictionary["errors"].append({'errorType':'Warning','errorString':'nonfatal error:  unrecognized flag: '+args[index]+' this flag will be excluded from the arguments\
+        refer to '+command_line_flag_file+' for a complete list and description of command line flags'})
 
-## dictionary of actual flags:argument values ##
-arguments={}
-
-## dictionary of flag:tuple(flag description,verbose flag description) ##
-command_line_flags={}
-for line in open(command_line_flag_file,'r').readlines():
-    line=line.strip().split('\t')
-    if line[1]=='required': required_flags.add(line[0])
-    command_line_flags[line[0]]=(line[2],line[3])
-
-args=sys.argv[1:]
 
 ######################################################################################################
 def return_exec_code(x):
@@ -76,25 +91,17 @@ def return_exec_code(x):
 
 ######################################################################################################
 ## build the dictionary for the json output ##
-output_dictionary={}
+
 output_dictionary["controlInfo"]={}
 output_dictionary["controlInfo"]["engineVersion"]= __version__
-output_dictionary["controlInfo"]["referenceId"]="123"
+output_dictionary["controlInfo"]["referenceId"]="12345"
 output_dictionary["controlInfo"]["docVersion"]="document version"
 output_dictionary["controlInfo"]["source"]="document source"
 output_dictionary["controlInfo"]["docDate"]="doc date"
-output_dictionary["controlInfo"]["processDate"]=str(datetime.today())
+output_dictionary["controlInfo"]["processDate"]=str(datetime.today().isoformat())
+output_dictionary["controlInfo"]["metadata"]=metadata.get(nlp_engine_path,arguments)                                                                                                      
 output_dictionary["errors"]=[]
 output_dictionary["reports"]=[]
-
-## parse the arguments from arg1 on into a dictionary - notify user of unrecognized flags ##
-## NOTE - this does assume that flags start in the first position and every other argument is a flag ##
-for index in range(0,len(args)-1,2):    
-    if args[index] in command_line_flags:
-        arguments[args[index]]=args[index+1]
-    else:
-        output_dictionary["errors"].append({'errorType':'Warning','errorString':'nonfatal error:  unrecognized flag: '+args[index]+' this flag will be excluded from the arguments\
-        refer to '+command_line_flag_file+' for a complete list and description of command line flags'})
 
 ## add in flag info to the json output dictionary
 output_dictionary["controlInfo"]["docName"]=arguments.get('-f')
@@ -117,8 +124,9 @@ else:
     mkdir_errors=make_text_output_directory.main(arguments.get('-f'))
     if mkdir_errors[0]==Exception:
         sys.stderr.write(mkdir_errors[1])
+
         sys.exit(1)        
-    exec ('output,errors,return_type=return_exec_code(process_'+arguments.get('-t')+'.main(arguments,path))')
+    exec ('output,errors,return_type=return_exec_code(process_'+arguments.get('-t')+'.main(arguments,nlp_engine_path ))')
     
     if return_type==Exception:        
         sys.stderr.write(errors['errorString'])
