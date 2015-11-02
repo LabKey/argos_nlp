@@ -1,40 +1,43 @@
-Liver;hepatic
+Liver
 Skin
 Abdomen
 Stomach;gastric
-Lymph Node;nodes;nodal;lymph
+Esophagus;esophageal
+Lymph Node;nodes;nodal;lymph;lymph nodes
 Heart;coronary
 Pancreas;pancreatic
 Ampulla
 Pelvis;pelvic
-Brain
 Spleen
-Tonsil
+Tonsil;tonsils
 Chest
-Marrow
-Neck
-Adrenal
-Back;Spine
-Bile Duct
+Back
+Endometrium;endometrial
+Vagina;vaginal
+Vulva;vulvar
+Cervix;cervical
+Uterus;uterine
+Spine;spinal;paraspinal
 Bone;osteo
 Leg;thigh;calf
 Arm;ulna;ulnar
+Anal;anus
 Torso;thoracic
 Diaphragm
 Acetabulum
 Prostate;prostatic
-Colon;colonic
-Ovary;ovarian
-Lung;pulmonary;pulmonic
+Colorectal;colon;colonic;sigmoid;rectum;rectal;rectosigmoid
+Ovary;ovarian;ovaries
+Lung;pulmonary;pulmonic;lungs
 Penis;penile
-Testis;testicular
-Breast;mammary
-Kidney;renal
+Testis;testicular;testicle
+Breast;mammary;axilliary;breasts
+Kidney;renal;kidneys
 Sacrum;sacral
-Spleen
-Nasopharynx
 Bile Duct
-Brain;Frontoparietal;parietal;frontal;temporal;occipital
+Brain and CNS;frontoparietal;parietal;frontal;temporal;occipital;cns
 Bladder
+Urine
+Bowel
 Adrenal
-Head;Mouth;Tongue;Mandible;Nasopharynx;pharynx;pharyngeal;Oropharynx
+Head and Neck;mouth;tongue;mandible;nasopharynx;pharynx;pharyngeal;oropharynx;nasal;paranasal;sinus;salivary

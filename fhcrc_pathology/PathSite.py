@@ -10,9 +10,7 @@ __version__='PathSite1.0'
 import os
 import re
 import global_strings
-import PathFindNumNodes
 path= os.path.dirname(os.path.realpath(__file__))
-dirs=path.split('\\')
 
     
 def get(disease_group,dictionary):   
@@ -36,85 +34,82 @@ def get(disease_group,dictionary):
         return sites,standardizations  
     
     ###############################################################################################################
-    
-        
+          
     ###############################################################################################################    
     def get_site(site_list,standardizations,specimen):        
-        specimen_site_list=[]
+        specimen_site_set=set([])
         specimen_start_stops_set=set([])
-        numNodes=None
-        numNodesPos=None
-        nodes_start_stops=[]
+    
+        def find_site_match(text):            
+            text=re.sub(r'[.,:;\\\/\-\)\(]',' ',text).lower()
+            for each_site in site_list:  
+                for each_match in re.finditer(r'^.*( |^)('+each_site+r')( |$).*',text,re.MULTILINE):                    
+                    if not re.search(r'( not | no |negative |free of)[\w ]{,50}'+each_match.group(2),text,re.MULTILINE) and \
+                       not re.search(each_match.group(2)+r'[\w ]{,40}( unlikely| not (likely|identif)| negative)',text,re.MULTILINE):                                           
+                        specimen_site_set.add(standardizations[each_site])                        
+                        ## only return char offsets for the regular path text (not the SpecimenSource text)
+                        if line_onset:
+                            specimen_start_stops_set.add((each_match.start(2)+line_onset,each_match.end(2)+line_onset))
+                     
         for section in dictionary:
             section_specimen=section[3]
             line_onset=section[2]
-            header=section[1]            
-            if section_specimen is not None and specimen in section_specimen and ('SPECIMEN' in header or 'DESCRIPTION' in header or 'IMPRESSION' in header or 'Specimen' in header):               
-                text= dictionary[section].items()[0][1]                
-                ## meant to weed out references to literature/papers - picking up publication info like this: 2001;30:1-14. ##
-                ## these can contain confusing general statements about the cancer and/or patients in general ##
-                if re.search('[\d]{4}[;,][ ]*[\d]{1,4}:[\d\-]{1,6}',text):pass               
-                else:
-                    text=text.lower()
-                    text=re.sub('[,:;\\\/\-]',' ',text); text=re.sub('[.] ', '  ',text)      ## this should keep decimal places and throw out periods                    
-                    for each_site in site_list:                        
-                        for each_match in re.finditer('^.*( |^|\")('+each_site+')( |$|\").*',text,re.DOTALL):                            
-                            if standardizations[each_site] not in specimen_site_list:                               
-                                specimen_site_list.append(standardizations[each_site])
-                            if 'Lymph' in standardizations[each_site]:
-                                numNodes,numNodesPos=PathFindNumNodes.get(section,text)                            
-                            specimen_start_stops_set.add((each_match.start(2)+line_onset,each_match.end(2)+line_onset))                                
-        if specimen_site_list:            
-            return {global_strings.NAME:"PathFindSite",global_strings.KEY:specimen,global_strings.TABLE:global_strings.FINDING_TABLE,global_strings.VALUE:';'.join(set(specimen_site_list)),
-                    global_strings.CONFIDENCE:("%.2f" % .85), global_strings.VERSION:__version__,global_strings.STARTSTOPS:[{global_strings.START:char[0],global_strings.STOP:char[1]} for char in specimen_start_stops_set]},numNodes,numNodesPos
-        else: return None,None,None
+            header=section[1]
+            if section==(0,'SpecimenSource',0,None):          
+                if dictionary[section][0].get(specimen):
+                    find_site_match(dictionary[section][0].get(specimen))          
+            elif ('SPECIMEN' in header or 'DESCRIPTION' in header or 'IMPRESSION' in header or 'Specimen' in header or 'DIAGNOSIS' in header) and 'CLINICAL' not in header:                  
+                for index,results in sorted(dictionary[section].items(),key=lambda x: int(x[0])):
+                    if specimen in section_specimen:                       
+                        ## meant to weed out references to literature/papers - picking up publication info like this: 2001;30:1-14. ##
+                        ## these can contain confusing general statements about the cancer and/or patients in general ##
+                        if re.search(r'[\d]{4}[;,][ ]*[\d]{1,4}:[\d\-]{1,6}',index):pass
+                        else:
+                            find_site_match(results)                  
+        if specimen_site_set:
+            return {global_strings.NAME:"PathFindSite",global_strings.KEY:specimen,global_strings.TABLE:global_strings.FINDING_TABLE,global_strings.VALUE:';'.join(specimen_site_set),
+                    global_strings.CONFIDENCE:("%.2f" % .85), global_strings.VERSION:__version__,global_strings.STARTSTOPS:[{global_strings.START:char[0],global_strings.STOP:char[1]} for char in specimen_start_stops_set]}
+        else: return None
+
                                   
-###################################################################################################################   
+    ################################################################################################################   
     try:
         disease_group_sites,disease_group_standardizations=make_lists(disease_group+'/')
         general_sites,general_standardizations=make_lists('')
     except: return ([{global_strings.ERR_TYPE:'Exception',global_strings.ERR_STR:'ERROR: could not access site file -- PathSite not completed'}],Exception)
-    
-    full_text=dictionary[(-1,'FullText',0,None)]
+   
     return_dictionary_list=[]    
-    site_list=[]
+    site_set=set([])
     start_stops_set=set([])
 
     for specimen_dictionary in dictionary[(0,'SpecimenSource',0,None)].values():        
         for specimen,description in specimen_dictionary.items():
-            specimen_site_dictionary,numNodes,numNodesPos=get_site(disease_group_sites,disease_group_standardizations,specimen)            
+            specimen_site_dictionary=get_site(disease_group_sites,disease_group_standardizations,specimen)      
             if not specimen_site_dictionary:               
-                specimen_site_dictionary,numNodes,numNodesPos=get_site(general_sites,general_standardizations,specimen)    
+                specimen_site_dictionary=get_site(general_sites,general_standardizations,specimen)          
             if specimen_site_dictionary:
-                return_dictionary_list.append(specimen_site_dictionary)
-                if numNodes and numNodesPos:                    
-                    return_dictionary_list.append(numNodes)
-                    return_dictionary_list.append(numNodesPos)
-
-                site_list+=(specimen_site_dictionary[global_strings.VALUE].split(';'))
+                return_dictionary_list.append(specimen_site_dictionary)                
+                site_set.union(set(specimen_site_dictionary[global_strings.VALUE].split(';')))         
                 for offsets in specimen_site_dictionary[global_strings.STARTSTOPS]:                    
-                    start_stops_set.add((offsets[global_strings.START],offsets[global_strings.STOP]))      
-    if site_list:        
-        return_dictionary_list.append({global_strings.NAME:"PathSite",global_strings.TABLE:global_strings.PATHOLOGY_TABLE,global_strings.VALUE:';'.join(set(site_list)),
-                                       global_strings.CONFIDENCE:0.75,global_strings.VERSION:__version__,global_strings.STARTSTOPS:[{global_strings.START:char[0],global_strings.STOP:char[1]} for char in start_stops_set]})
+                    start_stops_set.add((offsets[global_strings.START],offsets[global_strings.STOP]))
+
+    if site_set:
+        return_dictionary_list.append({global_strings.NAME:"PathSite",global_strings.KEY:specimen,global_strings.TABLE:global_strings.PATHOLOGY_TABLE,global_strings.VALUE:';'.join(site_set),
+                                       global_strings.CONFIDENCE:("%.2f" % 0.85),global_strings.VERSION:__version__,global_strings.STARTSTOPS:[{global_strings.START:char[0],global_strings.STOP:char[1]} for char in start_stops_set]})
 
     ## if there were no specimens, or no specimen headers in the text - look at the text overall - first for disease specific, then for general sites ##
     else:
         ## disease specific sites throughout the whole report ##
-        overall_site_dictionary,numNodes,numNodesPos=get_site(disease_group_sites,disease_group_standardizations,'')        
+        overall_site_dictionary=get_site(disease_group_sites,disease_group_standardizations,'')        
         if overall_site_dictionary:            
-            return_dictionary_list.append({global_strings.NAME:"PathSite",global_strings.TABLE:global_strings.PATHOLOGY_TABLE,global_strings.VALUE:overall_site_dictionary[global_strings.VALUE],
-                    global_strings.CONFIDENCE:0.75,global_strings.VERSION:__version__, global_strings.STARTSTOPS:overall_site_dictionary[global_strings.STARTSTOPS]})
-            if numNodes and numNodesPos:                    
-                return_dictionary_list.append(numNodes)
-                return_dictionary_list.append(numNodesPos)
+            return_dictionary_list.append({global_strings.NAME:"PathSite",global_strings.TABLE:global_strings.PATHOLOGY_TABLE,global_strings.KEY:'ALL',global_strings.VALUE:overall_site_dictionary[global_strings.VALUE],
+                    global_strings.CONFIDENCE:("%.2f" % 0.80),global_strings.VERSION:__version__, global_strings.STARTSTOPS:overall_site_dictionary[global_strings.STARTSTOPS]})
+           
         else:
             ## general sites throughout the whole report ##
-            overall_site_dictionary,numNodes,numNodesPos=get_site(general_sites,general_standardizations,'')
+            overall_site_dictionary=get_site(general_sites,general_standardizations,'')
             if overall_site_dictionary:            
-                return_dictionary_list.append({global_strings.NAME:"PathSite",global_strings.TABLE:global_strings.PATHOLOGY_TABLE,global_strings.VALUE:overall_site_dictionary[global_strings.VALUE],
-                    global_strings.CONFIDENCE:0.75,global_strings.VERSION:__version__, global_strings.STARTSTOPS:overall_site_dictionary[global_strings.STARTSTOPS]})
-                if numNodes and numNodesPos:                    
-                    return_dictionary_list.append(numNodes)
-                    return_dictionary_list.append(numNodesPos)
+                return_dictionary_list.append({global_strings.NAME:"PathSite",global_strings.KEY:'ALL',global_strings.TABLE:global_strings.PATHOLOGY_TABLE,global_strings.VALUE:overall_site_dictionary[global_strings.VALUE],
+                    global_strings.CONFIDENCE:("%.2f" % 0.70),global_strings.VERSION:__version__, global_strings.STARTSTOPS:overall_site_dictionary[global_strings.STARTSTOPS]})
+                
     return (return_dictionary_list,list)
