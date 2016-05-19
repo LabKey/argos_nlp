@@ -45,7 +45,8 @@ def parse(obx_file):
             try:
                 # sort by mrn, acc, and then setid, ignore null mrns,acc nums,setids
                 obx = sorted([y for y in obx[1:] if (y[headers.get(gb.MRN_CAPS)] != 'NULL' \
-                            and y[headers.get(gb.FILLER_ORDER_NO)] != 'NULL' and \
+                            and y[headers.get(gb.MRN_CAPS)] != gb.MRN_CAPS and \
+                            y[headers.get(gb.FILLER_ORDER_NO)] != 'NULL' and \
                             y[headers.get(gb.SET_ID)] != 'NULL')], key=lambda x: \
                             (x[headers.get(gb.MRN_CAPS)], x[headers.get(gb.FILLER_ORDER_NO)], \
                              int(x[headers.get(gb.SET_ID)])))
@@ -79,7 +80,7 @@ def parse(obx_file):
                             # create a specimen source dictionary for each labeled specimen
                             # (in the same format as the regular pathology section dictionary
                             ## catch NULL or empty string specimenSources
-                            if not headers.get(gb.SPECIMEN_SOURCE) or \
+                            if not line[headers.get(gb.SPECIMEN_SOURCE)] or \
                                line[headers.get(gb.SPECIMEN_SOURCE)] == 'NULL':
                                 specimen_dictionary = {}
                             else:

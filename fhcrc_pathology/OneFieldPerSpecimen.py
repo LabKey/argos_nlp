@@ -111,12 +111,6 @@ class OneFieldPerSpecimen(object):
                         find_string_match(results)
         return specimen_finding_set, specimen_start_stops_set
 
-    def return_exec_code(self, x):
-        '''
-        helper method to return exec statements
-        '''
-        return x
-
     def add_secondary_data_elements(self, each_field_d, full_text):
         '''
         if current class has an inferred or secondary class (like histology:grade or metastasis
