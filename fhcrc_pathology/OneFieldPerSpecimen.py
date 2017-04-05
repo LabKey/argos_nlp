@@ -146,7 +146,7 @@ class OneFieldPerSpecimen(object):
                 if not specimen_finding_set:
                     specimen_finding_set, specimen_start_stops_set = self.get_specimen_finding\
                                 (specimen, self.general_list, self.general_standardizations, d)
-                if specimen_finding_set:
+                if specimen_finding_set:                    
                     if self.inference_flag:
                         specimen_finding_set = self.infer(specimen_finding_set)
 
@@ -190,7 +190,6 @@ class OneFieldPerSpecimen(object):
                                  ("%.2f" % self.unlabled_specimen_confidence), gb.STARTSTOPS: \
                                  [{gb.START: char[0], gb.STOP:char[1]} for \
                                   char in specimen_start_stops_set]}
-
                 self.return_d_list.append(unk_finding_d)
                 if self.has_secondary_data_element == True:
                     self.add_secondary_data_elements(unk_finding_d, d[(-1, 'FullText', 0, None)])
@@ -209,5 +208,5 @@ class OneFieldPerSpecimen(object):
             self.return_d_list.append(overall_finding_d)
             if self.has_secondary_data_element == True:
                 self.add_secondary_data_elements(overall_finding_d, d[(-1, 'FullText', 0, None)])
-
+        if self.overall_field_name == 'CellularityPercent': print return_d_list
         return (self.return_d_list, list)

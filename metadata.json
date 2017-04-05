@@ -35,7 +35,7 @@
 						"values":["Anaplastic Astrocytoma","Anaplastic Ependymoma","Anaplastic Ganglioglioma","Anaplastic Meningioma","Anaplastic Oligoastrocytoma","Anaplastic Oligodendroglioma","Astroblastoma","Astrocytoma","Atypical Meningioma","Central Neurocytoma","Chondrosarcoma","Chordoid Meningioma","Chordoma","Craniopharyngioma","Dysembryoplastic Neuroepithelial Tumor (DNET)","Ependymoma","Esthesioneuroblastoma","Ganglioglioma","Glioblastoma","Glioma","Gliosarcoma","Hemangioblastoma","Hemangiopericytoma","Meningioma","Medulloblastoma","Neurofibroma","Neuroblastoma","Oligoastrocytoma","Oligodendroglioma","Papillary Glioneuronal Tumor","Pilocytic Astrocytoma","Pituitary Adenoma","Pleomorphic Xanthoastrocytoma","Primitive Neuroectodermal Tumor (PNET)","Schwannoma","Small Cell Glioblastoma","Subependymoma","Undifferentiated Neuroepithelial Tumor"]
 						},
 						{"diseaseGroup":["breast"],
-						"values":["Adenocarcinoma","Ductal Carcinoma","Lobular Carcinoma"]
+						"values":["Adenocarcinoma","Ductal Carcinoma","Invasive Lobular Carcinoma"]
 						},
 						{"diseaseGroup":["GI"],
 						"values":["Adenocarcinoma","Squamous Cell Carcinoma"]
@@ -51,9 +51,6 @@
 						},
 						{"diseaseGroup":["heme"],
 						"values":["AML","CML","MM","MDS","CCL","Lymphoma","Leukemia"]
-						},
-						{"diseaseGroup":["male_cancers"],
-						"values":["Adenocarcinoma"]
 						},
 						{"diseaseGroup":["other"],
 						"values":[]
@@ -81,7 +78,7 @@
 						"values":["Anaplastic Astrocytoma","Anaplastic Ependymoma","Anaplastic Ganglioglioma","Anaplastic Meningioma","Anaplastic Oligoastrocytoma","Anaplastic Oligodendroglioma","Astroblastoma","Astrocytoma","Atypical Meningioma","Central Neurocytoma","Chondrosarcoma","Chordoid Meningioma","Chordoma","Craniopharyngioma","Dysembryoplastic Neuroepithelial Tumor (DNET)","Ependymoma","Esthesioneuroblastoma","Ganglioglioma","Glioblastoma","Glioma","Gliosarcoma","Hemangioblastoma","Hemangiopericytoma","Meningioma","Medulloblastoma","Neurofibroma","Neuroblastoma","Oligoastrocytoma","Oligodendroglioma","Papillary Glioneuronal Tumor","Pilocytic Astrocytoma","Pituitary Adenoma","Pleomorphic Xanthoastrocytoma","Primitive Neuroectodermal Tumor (PNET)","Schwannoma","Small Cell Glioblastoma","Subependymoma","Undifferentiated Neuroepithelial Tumor"]
 						},
 						{"diseaseGroup":["breast"],
-						"values":["Adenocarcinoma","Ductal Carcinoma","Lobular Carcinoma"]
+						"values":["Adenocarcinoma","Ductal Carcinoma","Invasive Lobular Carcinoma"]
 						},
 						{"diseaseGroup":["GI"],
 						"values":["Adenocarcinoma","Squamous Cell Carcinoma"]
@@ -97,9 +94,6 @@
 						},
 						{"diseaseGroup":["heme"],
 						"values":["AML","CML","MM","MDS","CCL","Lymphoma","Leukemia"]
-						},
-						{"diseaseGroup":["male_cancers"],
-						"values":["Adenocarcinoma"]
 						},
 						{"diseaseGroup":["other"],
 						"values":[]
@@ -130,7 +124,7 @@
 						"values":["Cholecystectomy","Pancreaticoduodenectomy","Omentectomy","Hemicolectomy","Segmental Resection","Appendectomy","Polypectomy"]
 						},
 						{"diseaseGroup":["GU"],
-						"values":["Prostatectomy","Radical Prostatectomy","Cystectomy"]
+						"values":["Prostatectomy","Radical Prostatectomy","Cystectomy","Orchiectomy"]
 						},
 						{"diseaseGroup":["gyn"],
 						"values":["Hysterectomy","Salpingo-Oopherectomy","Radical Hysterectomy","Externeration"]
@@ -143,9 +137,6 @@
 						},
 						{"diseaseGroup":["lung"],
 						"values":["Alveolectomy","Bronchoscopy","Thoracentesis","Cystoscopy","Endoscopy","Laminectomy","Foraminotomy","Facetectomy;facetomies","Fusion","Ligation","Lobectomy","Lymphadenectomy","Lysis Carotid Artery","Mediastinoscopy","Paracentesis","Pericardiocentesis","Pneumonectomy","Thoracentesis","Thoracoscopy","Thoracostomy","Thoracotomy","Pleurectomy"]
-						},
-						{"diseaseGroup":["male_cancers"],
-						"values":["Orchiectomy"]
 						},
 						{"diseaseGroup":["other"],
 						"values":[]
@@ -185,6 +176,9 @@
 					[
 						{"diseaseGroup":["*"],
 						"values":["Adenoma", "Ascites", "Atypical Cells", "Cyst", "Dysplasia", "Fibroma", "Fibrosis", "Granuloma", "Hyperplasia", "Inflammation", "Lipoma", "Metaplasia", "Mucinous", "Necrosis", "Polyp", "Treatment Effect"]
+						},
+						{"diseaseGroup":["breast"],
+						"values":["Atypia", "Lobular Carcinoma In Situ", "Atypical Ductal Hyperplasia", "Atypical Lobular Hyperplasia", "Papilloma", "Radial Scar", "Complex Sclerosing Lesion", "Flat Epithelial Atypia", "Phyllodes", "Atypical Apocrine Metaplasia"]
 						},
 						{"diseaseGroup":["sarcoma"],
 						"values":["Arterio-Venous Malformation", "Benign Vascular Proliferation", "Chondroma", "Chordoma", "Enchondroma", "Epidermoid Cyst", "Fibroma of Tendon Sheath", "Follicular Hyperplasia", "Giant Cell Granuloma", "Giant Cell Tumor Bone", "Hemangioma", "Hibernoma", "Leiomyoma", "Lipoma", "Myofibroblastoma", "Myolipoma", "Myxoma", "Neurofibroma", "Osteochondroma", "Perineruioma", "Schwannoma", "Solitary Fibrous Tumor"]
@@ -229,7 +223,7 @@
 						"values":["Gallbladder","Stomach","Rectum","Colon","Colorectal","Sigmoid Colon","Pancreas","Omentum","Ileum","Transverse Colon","Ascending Colon","Descending Colon","Cecum","Antrum","Rectosigmoid Colon","Appendix","Esophagus","Intestine","Duodenum","Bowel"]
 						},
 						{"diseaseGroup":["GU"],
-						"values":["Bladder","Prostate"]
+						"values":["Bladder","Prostate","Penis","Testicle"]
 						},
 						{"diseaseGroup":["gyn"],
 						"values":["Cervix","Uterus","Ovary","Vagina","Vulva","Fallopian","Pelvis","Edometrium"]
@@ -242,9 +236,6 @@
 						},
 						{"diseaseGroup":["lung"],
 						"values":["Upper Lobe","Mediastinum","Hilar","Interlobular","Lower Lobe","Middle Lobe","Middle/Lower Lobe","Bronchus","Pleura","Retroperitoneum","Upper/Middle Lobe","Lymph Node","Chest Wall"]
-						},
-						{"diseaseGroup":["male_cancers"],
-						"values":["Penis","Testicle"]
 						},
 						{"diseaseGroup":["other"],
 						"values":[]
@@ -286,8 +277,27 @@
 						}
 					]
 				},
-				{
-				"field":"PathDate",
+				{"field":"PathSignedDate",
+				"datatype":"date",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["*"],
+						"values":[]
+						}
+					]
+				}, 
+				{"field":"PathCollectedDate",
+				"datatype":"date",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["*"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"PathReceivedDate",
 				"datatype":"date",
 				"closedClass":"False",
 				"diseaseProperties":
@@ -367,7 +377,7 @@
 				"diseaseProperties":
 					[
 						{"diseaseGroup":["*"],
-						"values":["brain","breast","head_neck","heme","lung","GU","GI","sarcoma","gyn","other","skin","male_cancers"]
+						"values":["brain","breast","head_neck","heme","lung","GU","GI","sarcoma","gyn","other","skin"]
 						}
 					]
 				}
@@ -381,7 +391,7 @@
 				"diseaseProperties":
 					[
 						{"diseaseGroup":["*"],
-						"values":["brain","breast","GI","GU","gyn","heme","lung","sarcoma", "skin","male_cancers","other","head_neck"]
+						"values":["brain","breast","GI","GU","gyn","heme","lung","sarcoma", "skin","other","head_neck"]
 						}
 					]
 				}
@@ -407,7 +417,7 @@
 						"values":["Cholecystectomy","Pancreaticoduodenectomy","Omentectomy","Hemicolectomy","Segmental Resection","Appendectomy","Polypectomy"]
 						},
 						{"diseaseGroup":["GU"],
-						"values":["Prostatectomy","Radical Prostatectomy","Cystectomy"]
+						"values":["Prostatectomy","Radical Prostatectomy","Cystectomy","Orchiectomy"]
 						},
 						{"diseaseGroup":["gyn"],
 						"values":["Hysterectomy","Salpingo-Oopherectomy","Radical Hysterectomy","Externeration"]
@@ -420,9 +430,6 @@
 						},
 						{"diseaseGroup":["lung"],
 						"values":["Alveolectomy","Bronchoscopy","Thoracentesis","Cystoscopy","Endoscopy","Laminectomy","Foraminotomy","Facetectomy;facetomies","Fusion","Ligation","Lobectomy","Lymphadenectomy","Lysis Carotid Artery","Mediastinoscopy","Paracentesis","Pericardiocentesis","Pneumonectomy","Thoracentesis","Thoracoscopy","Thoracostomy","Thoracotomy","Pleurectomy"]
-						},
-						{"diseaseGroup":["male_cancers"],
-						"values":["Orchiectomy"]
 						},
 						{"diseaseGroup":["other"],
 						"values":[]
@@ -453,7 +460,7 @@
 						"values":["Gallbladder","Stomach","Rectum","Colon","Colorectal","Sigmoid Colon","Pancreas","Omentum","Ileum","Transverse Colon","Ascending Colon","Descending Colon","Cecum","Antrum","Rectosigmoid Colon","Appendix","Esophagus","Intestine","Duodenum","Bowel"]
 						},
 						{"diseaseGroup":["GU"],
-						"values":["Bladder","Prostate"]
+						"values":["Bladder","Prostate","Penis","Testicle"]
 						},
 						{"diseaseGroup":["gyn"],
 						"values":["Cervix","Uterus","Ovary","Vagina","Vulva","Fallopian","Pelvis","Edometrium"]
@@ -466,9 +473,6 @@
 						},
 						{"diseaseGroup":["lung"],
 						"values":["Upper Lobe","Mediastinum","Hilar","Interlobular","Lower Lobe","Middle Lobe","Middle/Lower Lobe","Bronchus","Pleura","Retroperitoneum","Upper/Middle Lobe","Lymph Node","Chest Wall"]
-						},
-						{"diseaseGroup":["male_cancers"],
-						"values":["Penis","Testicle"]
 						},
 						{"diseaseGroup":["other"],
 						"values":[]
@@ -599,9 +603,6 @@
 						{"diseaseGroup":["heme"],
 						"values":["AML","CML","MM","MDS","CCL","Lymphoma","Leukemia"]
 						},
-						{"diseaseGroup":["male_cancers"],
-						"values":["Adenocarcinoma"]
-						},
 						{"diseaseGroup":["other"],
 						"values":[]
 						},
@@ -708,9 +709,6 @@
 						},
 						{"diseaseGroup":["heme"],
 						"values":["AML","CML","MM","MDS","CCL","Lymphoma","Leukemia"]
-						},
-						{"diseaseGroup":["male_cancers"],
-						"values":["Adenocarcinoma"]
 						},
 						{"diseaseGroup":["other"],
 						"values":[]
@@ -819,7 +817,7 @@
 			{"table":"Cytogenetics",
 			"fields":[
 				{
-				"field":"Date",
+				"field":"ReceivedDate",
 				"datatype":"date",
 				"closedClass":"False",
 				"diseaseProperties":
@@ -849,6 +847,76 @@
 						}
 					]
 				},
+				{"field":"DistinctMutations",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["*"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"Normal",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["*"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"DistinctMonosomies",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["*"],
+						"values":[]
+						}
+					]
+				},
+                        {"field":"Hyperploidy",
+				"datatype":"boolean",
+				"closedClass":"True",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["*"],
+						"values":[true, false]
+						}
+					]
+				},
+                        {"field":"Hypoploidy",
+				"datatype":"boolean",
+				"closedClass":"True",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["*"],
+						"values":[true, false]
+						}
+					]
+				},
+				{"field":"Warning",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["*"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"DistinctTrisomies",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["*"],
+						"values":[]
+						}
+					]
+				},
 				{"field":"+8",
 				"datatype":"integer",
 				"closedClass":"False",
@@ -869,32 +937,102 @@
 						}
 					]
 				},
-				{"field":"mutations",
+                        {"field":"-13",
 				"datatype":"integer",
 				"closedClass":"False",
 				"diseaseProperties":
 					[
-						{"diseaseGroup":["*"],
+						{"diseaseGroup":["heme"],
 						"values":[]
 						}
 					]
 				},
-				{"field":"normal",
+                        {"field":"del(13p)",
 				"datatype":"integer",
 				"closedClass":"False",
 				"diseaseProperties":
 					[
-						{"diseaseGroup":["*"],
+						{"diseaseGroup":["heme"],
 						"values":[]
 						}
 					]
 				},
-				{"field":"monosomies",
+                        {"field":"del(13q)",
 				"datatype":"integer",
 				"closedClass":"False",
 				"diseaseProperties":
 					[
-						{"diseaseGroup":["*"],
+						{"diseaseGroup":["heme"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"t(16;20)",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["heme"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"t(14;16)",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["heme"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"t(4;14)",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["heme"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"t(11;14)",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["heme"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"del(17p)",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["heme"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"del(1p)",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["heme"],
+						"values":[]
+						}
+					]
+				},
+				{"field":"add(1q)",
+				"datatype":"integer",
+				"closedClass":"False",
+				"diseaseProperties":
+					[
+						{"diseaseGroup":["heme"],
 						"values":[]
 						}
 					]
@@ -905,16 +1043,6 @@
 				"diseaseProperties":
 					[
 						{"diseaseGroup":["heme"],
-						"values":[]
-						}
-					]
-				},
-				{"field":"warning",
-				"datatype":"integer",
-				"closedClass":"False",
-				"diseaseProperties":
-					[
-						{"diseaseGroup":["*"],
 						"values":[]
 						}
 					]
@@ -1069,7 +1197,7 @@
 						}
 					]
 				},
-				{"field":"del(-5)",
+				{"field":"-5",
 				"datatype":"integer",
 				"closedClass":"False",
 				"diseaseProperties":
@@ -1079,7 +1207,7 @@
 						}
 					]
 				},
-				{"field":"del(-7)",
+				{"field":"-7",
 				"datatype":"integer",
 				"closedClass":"False",
 				"diseaseProperties":
@@ -1089,22 +1217,12 @@
 						}
 					]
 				},
-				{"field":"del(+6)",
+				{"field":"+6",
 				"datatype":"integer",
 				"closedClass":"False",
 				"diseaseProperties":
 					[
 						{"diseaseGroup":["heme"],
-						"values":[]
-						}
-					]
-				},
-				{"field":"trisomies",
-				"datatype":"integer",
-				"closedClass":"False",
-				"diseaseProperties":
-					[
-						{"diseaseGroup":["*"],
 						"values":[]
 						}
 					]
@@ -1143,7 +1261,7 @@
 				"diseaseProperties":
 					[
 						{"diseaseGroup":["*"],
-						"values":["brain","breast","head_neck","heme","lung","GU","GI","sarcoma","gyn","other","skin","male_cancers"]
+						"values":["brain","breast","head_neck","heme","lung","GU","GI","sarcoma","gyn","other","skin"]
 						}
 					]
 				},

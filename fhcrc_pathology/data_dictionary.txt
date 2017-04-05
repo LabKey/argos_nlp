@@ -3,7 +3,9 @@ PathSite	Class
 PathSide	Class
 PathHistology	Class
 ClinicalHistory	Class
-PathDate	Class
+PathSignedDate	Class
+PathCollectedDate	Class
+PathReceivedDate	Class
 Pathologist	Class
 OtherFinding	Class
 PathQuality	Class
