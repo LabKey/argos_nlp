@@ -1,6 +1,6 @@
 '''author@esilgard'''
 #
-# Copyright (c) 2015-2016 Fred Hutchinson Cancer Research Center
+# Copyright (c) 2015-2017 Fred Hutchinson Cancer Research Center
 #
 # Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 #
@@ -40,7 +40,6 @@ def get(karyotype_string, karyo_offset):
             # cell description list - order is important to refer back to
             # previous cell lines
             cell_description = each_cell_type.split(',')
-            
             try:
                 d[gb.CHROMOSOME_NUM] = cell_description[0].strip()
                 try:
@@ -95,16 +94,18 @@ def get(karyotype_string, karyo_offset):
                     # first group is the general type of abnormality 
                     # second group is the affected chromosome (sometimes involving a more complicated type of abnormality)                    
                     loss_gain = re.match(r'[ ]?([\+\-\?a-zA-Z ]+)[ ]?([\(]?[\d\w\~\?\(\)\-\.\;]+[\)]?)', d[gb.ABNORMALITIES][i])
-                    # not doing anything with this match yet
+                    # not doing anything with this match yet - good place to deal with polyploidy
                     copy = re.match('[xX][\d]', d[gb.ABNORMALITIES][i][-2:])                    
                     if loss_gain:   
                         # this group is the p and or q arm location (if there is one)
                         arm_location = re.match('.*([\(][pq][pq;\?\d\.]+[\)])',loss_gain.group(0))
+                        #print loss_gain.group(0)
                         if arm_location:
                             chromosomes = loss_gain.group(2)[:loss_gain.group(2).find(arm_location.group(1))]
                             d[gb.ABNORMALITIES][i] = {loss_gain.group(1): (chromosomes, arm_location.group(1))}                            
                         else:
-                            d[gb.ABNORMALITIES][i] = {loss_gain.group(1): (loss_gain.group(2), '')}                       
+                            d[gb.ABNORMALITIES][i] = {loss_gain.group(1): (loss_gain.group(2), '')}     
+                            
                     else:
                         ## case where there's no type of abnormality (eg del, +)
                         abnormal_chromosome = \
@@ -116,15 +117,15 @@ def get(karyotype_string, karyo_offset):
                             (abnormal_chromosome.group(1), abnormal_chromosome.group(2))}
                         else:                            
                             d[gb.WARNING] = True
-
+        
         ## warning flag for error finding cell count
         else:
             d[gb.WARNING] = True
         return_list.append(d)
         cell_type_order += 1
-            
+
     return return_list, None, list
 
 
 if __name__ == '__main__':
-    get('', 0)
+    get('45,X,-X,del(2)(q33),inv(3)(p21q27),add(4)(q35),add(6)(q23),add(7)(q32)x2,add(8)(q24.1),t(8;21)   (q22;q22),add(9)(q34),add(10)(q24),add(12)(q22),del(16)(q22),add(18)(q11.2),add(22)(q13)[17]   //46,XY[3]', 0)
