@@ -8,9 +8,14 @@
 import global_strings as gb
 import aml_swog_classification
 import eln_classification
+import dri_classification
 import re
 
 __version__='cytogenetics_mutation_parser1.0'
+
+# minimums for clonality check - default to 2 and 3 for monosomies
+min_abn = 0
+min_mono = 0
 
 def get(cell_list, karyotype_string, karyo_offset):
 
@@ -30,8 +35,7 @@ def get(cell_list, karyotype_string, karyo_offset):
     # chromosomes that can be generally coded with the six coding groups:
     # translocation(chr,arm), -chr, add(chr,arm), del(chr,arm), inv(chr,arm),
     # and dup or trp(chr,arm) **ASK MIN ABOUT NAMING CONVENTION FOR GROUPS
-    all_chromosomes = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14', \
-        '16','17','18','19','20','21','22','X','Y']
+    all_chromosomes = [str(i) for i in range(1,22)] + ['X','Y']
     other_chr_group = ['13','14','15','21','22']
     arm_list = ['p','q']
     specific_translocations = ['15;17', '6;9', '14;16', '9;22','8;21', '16;16',
@@ -91,7 +95,8 @@ def get(cell_list, karyotype_string, karyo_offset):
                         for z, zz in y.items():                            
                             variation_string = z + zz[0] + zz[1]
                             stripped_chr = zz[0].strip('(').strip(')')
-                            if cell_count >= 2: 
+                            
+                            if cell_count >= min_abn:
                                 variation_start = cell_offset + \
                                 (karyotype_string[cell_offset-karyo_offset:].find(variation_string))
                                 # note - this does NOT capture character offsets correctly
@@ -113,7 +118,7 @@ def get(cell_list, karyotype_string, karyo_offset):
                                         if stripped_chr in all_chromosomes:  
                                             add_to_d('+' + stripped_chr, cell_count, variation_start, variation_end)
                                     ## all monosomies                            
-                                    elif z == '-' and cell_count >= 3:                                    
+                                    elif z == '-' and cell_count >= min_mono:                                    
                                         # track only autosomal monosomies for 
                                         # monosomal karyotype classification
                                         if stripped_chr not in ['X','Y']:
@@ -128,8 +133,7 @@ def get(cell_list, karyotype_string, karyo_offset):
                                     if z not in ['r','mar','+ma','+mar','add']:
                                         other_structural_abnormalities_set.add(variation_string) 
                                     all_abnormality_set.add(variation_string) 
-                                    if z not in['mar','+ma','+mar']:
-                                        abnormality_set.add(variation_string)
+                                    abnormality_set.add(variation_string)
                                 # specific salient translocations
                                 if z == 't' or 'dic' in z:
                                     if stripped_chr in specific_translocations:
@@ -172,10 +176,11 @@ def get(cell_list, karyotype_string, karyo_offset):
                                 ## isochromes - implicit deletion of p or q arms
                                 elif z == 'i' or z == '?i':
                                     if stripped_chr in all_chromosomes:
-                                        if 'p10' in zz[1]:
-                                            add_to_d('del(' + each + 'q)', cell_count, variation_start, variation_end)
-                                        elif 'q10' in zz[1]:  
+                                        if 'p' in zz[1]:
+                                            add_to_d('del(' + each + 'q)', cell_count, variation_start, variation_end)                                            
+                                        elif 'q' in zz[1]:  
                                             add_to_d('del(' + each + 'p)', cell_count, variation_start, variation_end)
+                                        
                                 else:
                                     ## re.search allows for variants with '?'
                                     generic_abn_label = re.match('^.{0,5}(dup|trp|inv|ins|del|add).{0,5}$',z)
@@ -225,4 +230,6 @@ def get(cell_list, karyotype_string, karyo_offset):
     
     return_dictionary_list.append(aml_swog_classification.get(abnormalities, abnormality_set, offsets, cell_list))
     return_dictionary_list.append(eln_classification.get(abnormalities, abnormality_set, offsets, karyotype_string, karyo_offset))
+    return_dictionary_list.append(dri_classification.get(abnormalities, abnormality_set, offsets, karyotype_string, karyo_offset))
+
     return return_dictionary_list, return_errors
